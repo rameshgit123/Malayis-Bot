@@ -1,0 +1,119 @@
+<!-- 
+
+Copyright 2016-present, Facebook, Inc.
+All rights reserved.
+
+This source code is licensed under the license found in the
+LICENSE file in the root directory of this source tree.
+
+-->
+<html>
+<head>
+    <title>Messenger Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <style type="text/css">
+        .myButton {
+            -moz-box-shadow: 0px 0px 0px 2px #9fb4f2;
+            -webkit-box-shadow: 0px 0px 0px 2px #9fb4f2;
+            box-shadow: 0px 0px 0px 2px #9fb4f2;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #7892c2), color-stop(1, #476e9e));
+            background: -moz-linear-gradient(top, #7892c2 5%, #476e9e 100%);
+            background: -webkit-linear-gradient(top, #7892c2 5%, #476e9e 100%);
+            background: -o-linear-gradient(top, #7892c2 5%, #476e9e 100%);
+            background: -ms-linear-gradient(top, #7892c2 5%, #476e9e 100%);
+            background: linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7892c2', endColorstr='#476e9e',GradientType=0);
+            background-color: #7892c2;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            border: 1px solid #4e6096;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 19px;
+            padding: 12px 37px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #283966;
+        }
+
+            .myButton:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #476e9e), color-stop(1, #7892c2));
+                background: -moz-linear-gradient(top, #476e9e 5%, #7892c2 100%);
+                background: -webkit-linear-gradient(top, #476e9e 5%, #7892c2 100%);
+                background: -o-linear-gradient(top, #476e9e 5%, #7892c2 100%);
+                background: -ms-linear-gradient(top, #476e9e 5%, #7892c2 100%);
+                background: linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#476e9e', endColorstr='#7892c2',GradientType=0);
+                background-color: #476e9e;
+            }
+
+            .myButton:active {
+                position: relative;
+                top: 1px;
+            }
+    </style>
+</head>
+
+<body>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'Messenger'));
+
+        window.extAsyncInit = function () {           
+            MessengerExtensions.getUserID(function success(uids) {
+                var psid = uids.psid;
+                $("#Userid").html(psid);
+            }, function error(err) {
+                alert(err);
+            });          
+
+        };
+
+       
+
+        function closewindow() {
+            $.ajax({
+                type: 'get',
+                url: 'https://hdimage-92465.onmodulus.net/sendmessage?senderid=' + getParameterByName('id') + '',
+                success: function (data) {
+                    // use data
+                    window.close();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    window.close();
+                }
+            });                
+           
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+  
+
+    <h1>Webview Demo</h1>
+     <br /><br />
+    <div style="color:blueviolet;font-size:18px;font-weight:bold"> USER ID : <span style="color:blue;font-size:18px;font-weight:bold" id="Userid"></span></div>
+       <br /><br /><br />
+  Take Picture : <input type="file" accept="image/*" capture="camera">
+    <center>
+    <a href="javascript:void(0);" class="myButton" onclick="closewindow()">Close window</a>
+        </center>
+</body>
+</html>
