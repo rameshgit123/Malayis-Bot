@@ -346,23 +346,29 @@ function receivedPostback(event) {
           }
       };
       callSendAPI(messageData);
+      checkstatus(senderID, "Purchased_YES", "text", "");
+  }
+  else if (payload == "Purchased_YES")
+  {
       checkstatus(senderID, "USER_DEFINED_PAYLOAD", "text", "");
   }
-  else if(payload=="View_Examples")
+  else if (payload == "Purchased_NO")
   {
-   sendexampleimages(senderID)
+      checkstatus(senderID, "Purchased_NO", "text", "");
   }
-  else if(payload=="View_Card_Examples")
+  else if (payload == "Invoices_YES")
   {
-  sendcardexampleimages(senderID);
+      checkstatus(senderID, "Invoices_YES", "text", "");
   }
-  else if(payload=="Different_items_YES")
+  else if (payload == "Invoices_NO")
   {
-  checkstatus(senderID,"Different_items_YES","Different_items_YES","");  
+      checkstatus(senderID, "Invoices_NO", "text", "");
   }
-  else if(payload=="Different_items_NO")
-  {
-  checkstatus(senderID,"Different_items_NO","Different_items_NO","");  
+  else if (payload == "NOInvoices_YES") {
+      checkstatus(senderID, "NOInvoices_YES", "text", "");
+  }
+  else if (payload == "NOInvoices_NO") {
+      checkstatus(senderID, "NOInvoices_NO", "text", "");
   }
   
 }
@@ -426,7 +432,7 @@ function sendTextMessage(recipientId, messageText) {
 
 function sendwebview(id)
 {
-    var url = "https://MalayisBot.herokuapp.com?id=" + id + "";
+    var url = "https://malayisbot.herokuapp.com?id=" + id + "";
     var messageData = {        
         "recipient":{
             "id": id
@@ -531,7 +537,7 @@ var http = require('http');
     var jsstr=jsbody.substring(1, jsbody.length-1).replace(/\\"/g, '"');
         var jsonres = JSON.parse(jsstr);       
           console.log(jsstr);
-       if(jsonres.status=="productlist")
+       if(jsonres.status=="New")
        {             
            var messageData = {
                recipient: {
@@ -565,9 +571,136 @@ var http = require('http');
            };
            callSendAPI(messageData);
        }
-       else {
-           sendTextMessage(id, jsonres.status);       
+       else if (jsonres.status == "Purchased_YES") {
 
+           var messageData = {
+               recipient: {
+                   id: id
+               },
+               "message": {
+                   "attachment": {
+                       "type": "template",
+                       "payload": {
+                           "template_type": "generic",
+                           "elements": [
+                             {
+                                 "title": "Do you have invoices for cigarettes purchased in last three days?",
+                                 "buttons": [
+                                   {
+                                       "type": "postback",
+                                       "title": "Yes",
+                                       "payload": "Invoices_YES"
+                                   },
+                                   {
+                                       "type": "postback",
+                                       "title": "No",
+                                       "payload": "Invoices_NO"
+                                   }
+                                 ]
+                             }
+                           ]
+                       }
+                   }
+               }
+           };
+           callSendAPI(messageData);
+       }
+       else if (jsonres.status == "Purchased_NO") {           
+           sendTextMessage(id, "Thank you");
+       }
+       else if (jsonres.status == "Completed") {
+           sendTextMessage(id, "Thank you");
+       }
+       else if (jsonres.status == "Invoices_YES") {
+           sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+       }
+       else if (jsonres.status == "Invoices_NO") {
+           sendwebview(id);          
+       }
+       else if (jsonres.status == "Q5") {
+           var messageData = {
+               recipient: {
+                   id: id
+               },
+               "message": {
+                   "attachment": {
+                       "type": "template",
+                       "payload": {
+                           "template_type": "generic",
+                           "elements": [
+                             {
+                                 "title": "Did you purchase any cigarettes in last 3 days for which you do not have the invoice?",
+                                 "buttons": [
+                                   {
+                                       "type": "postback",
+                                       "title": "Yes",
+                                       "payload": "NOInvoices_YES"
+                                   },
+                                   {
+                                       "type": "postback",
+                                       "title": "No",
+                                       "payload": "NOInvoices_NO"
+                                   }
+                                 ]
+                             }
+                           ]
+                       }
+                   }
+               }
+           };
+           callSendAPI(messageData);
+       }
+
+       else if (jsonres.status == "Loopitems") {
+           sendTextMessage(id, jsonres.message.total);
+       }
+       else if (jsonres.status == "number_exception") {
+           sendTextMessage(id, "Please enter a valid number..");
+       }
+       else if (jsonres.status == "Completed") {
+           sendTextMessage(id, "Thank you");
+       }
+       else if (jsonres.status == "Q6") {   
+           sendwebview(id);
+       }
+       else if (jsonres.status == "Q3_count") {
+           sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+       }
+       else if (jsonres.status == "Q2") {
+           var messageData = {
+               recipient: {
+                   id: id
+               },
+               "message": {
+                   "attachment": {
+                       "type": "template",
+                       "payload": {
+                           "template_type": "generic",
+                           "elements": [
+                             {
+                                 "title": "Do you have invoices for cigarettes purchased in last three days?",
+                                 "buttons": [
+                                   {
+                                       "type": "postback",
+                                       "title": "Yes",
+                                       "payload": "Invoices_YES"
+                                   },
+                                   {
+                                       "type": "postback",
+                                       "title": "No",
+                                       "payload": "Invoices_NO"
+                                   }
+                                 ]
+                             }
+                           ]
+                       }
+                   }
+               }
+           };
+           callSendAPI(messageData);
+       }
+       else {
+           sendTextMessage(id, jsonres.status);
        }
        
     });
