@@ -265,7 +265,7 @@ function receivedMessage(event) {
         TranslatetoMalay(messageText, "a", "b", "c", function (Lng) {
             sendTextMessage(senderID, Lng);
         });
-       // checkstatus(senderID, messageText, "text", "");
+        // checkstatus(senderID, messageText, "text", "");
 
     } else if (messageAttachments) {
         checkstatus(senderID, "file", messageAttachments[0].type, messageAttachments);
@@ -658,8 +658,7 @@ function checkstatus(id, text, type, files) {
                         };
                         callSendAPI(messageData);
                     }
-                    else if (jsonres.status == "Melayu_lang")
-                    {
+                    else if (jsonres.status == "Melayu_lang") {
                         Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
                     }
                     else if (jsonres.status == "Mandarin_lang") {
@@ -671,38 +670,15 @@ function checkstatus(id, text, type, files) {
 
 
                     else if (jsonres.status == "Purchased_YES") {
-
-                        var messageData = {
-                            recipient: {
-                                id: id
-                            },
-                            "message": {
-                                "attachment": {
-                                    "type": "template",
-                                    "payload": {
-                                        "template_type": "generic",
-                                        "elements": [
-                                          {
-                                              "title": "Do you have invoices for cigarettes purchased in last three days?",
-                                              "buttons": [
-                                                {
-                                                    "type": "postback",
-                                                    "title": "Yes",
-                                                    "payload": "Invoices_YES"
-                                                },
-                                                {
-                                                    "type": "postback",
-                                                    "title": "No",
-                                                    "payload": "Invoices_NO"
-                                                }
-                                              ]
-                                          }
-                                        ]
-                                    }
-                                }
-                            }
-                        };
-                        callSendAPI(messageData);
+                        if (jsonres.message[0].lang == "Melayu") {
+                            Q2(id, "Adakah anda mempunyai invois untuk rokok yang telah dibeli dalam tiga hari yang lalu?", "Ya", "Tiada");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");
+                        }
+                        else {
+                            Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");
+                        }
                     }
                     else if (jsonres.status == "Purchased_NO") {
                         sendTextMessage(id, "Thank you");
@@ -816,8 +792,7 @@ function checkstatus(id, text, type, files) {
 
 }
 
-function Q1(id,title,yesmesg,no_mesg)
-{
+function Q1(id, title, yesmesg, no_mesg) {
     var messageData = {
         recipient: {
             id: id
@@ -850,6 +825,40 @@ function Q1(id,title,yesmesg,no_mesg)
     };
     callSendAPI(messageData);
 }
+function Q2(id, title, yesmesg, no_mesg) {
+    var messageData = {
+        recipient: {
+            id: id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                      {
+                          "title": title,
+                          "buttons": [
+                            {
+                                "type": "postback",
+                                "title": yesmesg,
+                                "payload": "Invoices_YES"
+                            },
+                            {
+                                "type": "postback",
+                                "title": no_mesg,
+                                "payload": "Invoices_NO"
+                            }
+                          ]
+                      }
+                    ]
+                }
+            }
+        }
+    };
+    callSendAPI(messageData);
+}
+
 /*
  * Send a message with Quick Reply buttons.
  *
