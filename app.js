@@ -442,14 +442,14 @@ function sendwebview(id)
                     "payload":{
                         "elements":[{
                             "buttons": [{
-                                "title":"Upload Picture",
+                                "title": "Please provide all the cigarette brands  you bought with their pack size & quantity",
                                 "type":"web_url",
                                 "url":url,
                                 "messenger_extensions": true, 
                                 "webview_height_ratio":"compact"
                             }],                              
                             "subtitle":"",
-                            "title":"Upload Image"
+                            "title":"Add items"
                         }],
                         "template_type":"generic"
                     },
