@@ -442,14 +442,14 @@ function sendwebview(id)
                     "payload":{
                         "elements":[{
                             "buttons": [{
-                                "title": "Please provide all the cigarette brands  you bought with their pack size & quantity",
+                                "title": "Add items",
                                 "type":"web_url",
                                 "url":url,
                                 "messenger_extensions": true, 
                                 "webview_height_ratio":"compact"
                             }],                              
                             "subtitle":"",
-                            "title":"Add items"
+                            "title": "Please provide all the cigarette brands  you bought with their pack size & quantity"
                         }],
                         "template_type":"generic"
                     },
