@@ -334,11 +334,11 @@ function receivedPostback(event) {
                             "buttons": [{
                                 "type": "postback",
                                 "title": "Melayu",
-                                "payload": "Q1YES"
+                                "payload": "Melayu"
                             }, {
                                 "type": "postback",
                                 "title": "普通话",
-                                "payload": "Q1NO"
+                                "payload": "Mandarin"
                             }, {
                                 "type": "postback",
                                 "title": "English",
@@ -354,9 +354,9 @@ function receivedPostback(event) {
 
         callSendAPI(messageData);
 
-        TranslatetoMalay("i going to market", "a", "b", "c", function (Lng) {
-            sendTextMessage(senderID, Lng);
-        });
+        //TranslatetoMalay("i going to market", "a", "b", "c", function (Lng) {
+        //    sendTextMessage(senderID, Lng);
+        //});
 
         //var messageData = {
         //    recipient: {
@@ -390,6 +390,15 @@ function receivedPostback(event) {
         //};
         //callSendAPI(messageData);
         //
+    }
+    else if (payload == "Melayu") {
+        checkstatus(senderID, "Melayu_lang", "text", "");
+    }
+    else if (payload == "Mandarin") {
+        checkstatus(senderID, "Mandarin_lang", "text", "");
+    }
+    else if (payload == "English") {
+        checkstatus(senderID, "English_lang", "text", "");
     }
     else if (payload == "Purchased_YES") {
         checkstatus(senderID, "Purchased_YES", "text", "");
@@ -649,6 +658,18 @@ function checkstatus(id, text, type, files) {
                         };
                         callSendAPI(messageData);
                     }
+                    else if (jsonres.status == "Melayu_lang")
+                    {
+                        Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
+                    }
+                    else if (jsonres.status == "Mandarin_lang") {
+                        Q1(id, "您在过去三天里是否购买了香烟？", "是", "没有");
+                    }
+                    else if (jsonres.status == "English_lang") {
+                        Q1(id, "Have you purchased any cigarettes in last three days?", "Yes", "No");
+                    }
+
+
                     else if (jsonres.status == "Purchased_YES") {
 
                         var messageData = {
@@ -795,7 +816,40 @@ function checkstatus(id, text, type, files) {
 
 }
 
-
+function Q1(id,title,yesmesg,no_mesg)
+{
+    var messageData = {
+        recipient: {
+            id: id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                      {
+                          "title": title,
+                          "buttons": [
+                            {
+                                "type": "postback",
+                                "title": yesmesg,
+                                "payload": "Purchased_YES"
+                            },
+                            {
+                                "type": "postback",
+                                "title": no_mesg,
+                                "payload": "Purchased_NO"
+                            }
+                          ]
+                      }
+                    ]
+                }
+            }
+        }
+    };
+    callSendAPI(messageData);
+}
 /*
  * Send a message with Quick Reply buttons.
  *
