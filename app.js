@@ -346,41 +346,11 @@ function receivedPostback(event) {
           }
       };
       callSendAPI(messageData);
-      checkstatus(senderID, "Purchased_YES", "text", "");
+      //
   }
   else if (payload == "Purchased_YES")
   {
-      var messageData = {
-          recipient: {
-              id: senderID
-          },
-          "message": {
-              "attachment": {
-                  "type": "template",
-                  "payload": {
-                      "template_type": "generic",
-                      "elements": [
-                        {
-                            "title": "Do you have invoices for cigarettes purchased in last three days?",
-                            "buttons": [
-                              {
-                                  "type": "postback",
-                                  "title": "Yes",
-                                  "payload": "Invoices_YES"
-                              },
-                              {
-                                  "type": "postback",
-                                  "title": "No",
-                                  "payload": "Invoices_NO"
-                              }
-                            ]
-                        }
-                      ]
-                  }
-              }
-          }
-      };
-      callSendAPI(messageData);
+      checkstatus(senderID, "Purchased_YES", "text", "");
   }
   else if (payload == "Purchased_NO")
   {
