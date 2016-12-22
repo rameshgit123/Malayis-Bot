@@ -1,63 +1,70 @@
-<!-- 
-
-Copyright 2016-present, Facebook, Inc.
-All rights reserved.
-
-This source code is licensed under the license found in the
-LICENSE file in the root directory of this source tree.
-
--->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Messenger Demo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+
+    <title>Add Items</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <style type="text/css">
-        .myButton {
-            -moz-box-shadow: 0px 0px 0px 2px #9fb4f2;
-            -webkit-box-shadow: 0px 0px 0px 2px #9fb4f2;
-            box-shadow: 0px 0px 0px 2px #9fb4f2;
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #7892c2), color-stop(1, #476e9e));
-            background: -moz-linear-gradient(top, #7892c2 5%, #476e9e 100%);
-            background: -webkit-linear-gradient(top, #7892c2 5%, #476e9e 100%);
-            background: -o-linear-gradient(top, #7892c2 5%, #476e9e 100%);
-            background: -ms-linear-gradient(top, #7892c2 5%, #476e9e 100%);
-            background: linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7892c2', endColorstr='#476e9e',GradientType=0);
-            background-color: #7892c2;
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            border: 1px solid #4e6096;
-            display: inline-block;
-            cursor: pointer;
-            color: #ffffff;
-            font-family: Arial;
-            font-size: 19px;
-            padding: 12px 37px;
-            text-decoration: none;
-            text-shadow: 0px 1px 0px #283966;
+        .table > tbody > tr > td, .table > tfoot > tr > td {
+            vertical-align: middle;
         }
 
-            .myButton:hover {
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #476e9e), color-stop(1, #7892c2));
-                background: -moz-linear-gradient(top, #476e9e 5%, #7892c2 100%);
-                background: -webkit-linear-gradient(top, #476e9e 5%, #7892c2 100%);
-                background: -o-linear-gradient(top, #476e9e 5%, #7892c2 100%);
-                background: -ms-linear-gradient(top, #476e9e 5%, #7892c2 100%);
-                background: linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#476e9e', endColorstr='#7892c2',GradientType=0);
-                background-color: #476e9e;
+        @media screen and (max-width: 600px) {
+            table#cart tbody td .form-control {
+                width: 20%;
+                display: inline !important;
             }
 
-            .myButton:active {
-                position: relative;
-                top: 1px;
+            .actions .btn {
+                width: 36%;
+                margin: 1.5em 0;
             }
+
+            .actions .btn-info {
+                float: left;
+            }
+
+            .actions .btn-danger {
+                float: right;
+            }
+
+            table#cart thead {
+                display: none;
+            }
+
+            table#cart tbody td {
+                display: block;
+                padding: .6rem;
+                min-width: 320px;
+            }
+
+          
+
+            table#cart tbody td:before {
+                content: attr(data-th);
+                font-weight: bold;
+                display: inline-block;
+                width: 8rem;
+            }
+
+
+
+            table#cart tfoot td {
+                display: block;
+            }
+
+                table#cart tfoot td .btn {
+                    display: block;
+                }
+        }
     </style>
-</head>
-
-<body>
-    <script>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) { return; }
@@ -66,22 +73,47 @@ LICENSE file in the root directory of this source tree.
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'Messenger'));
 
-        window.extAsyncInit = function () {           
+        window.extAsyncInit = function () {
             MessengerExtensions.getUserID(function success(uids) {
                 var psid = uids.psid;
                 $("#Userid").html(psid);
             }, function error(err) {
                 alert(err);
-            });          
+            });
 
         };
 
-       
+        $(document).ready(function () {
+            $(".dropdown-menu li a").click(function () {
+                $(".btn:first-child").text($(this).text());
+                $(".btn:first-child").val($(this).text());
+
+            });
+
+        });
+        function  addrows()
+        {
+            
+            var $tableBody = $('#cart').find("tbody"),
+     $trLast = $tableBody.find("tr:last"),
+     $trNew = $trLast.clone();
+            $trLast.after($trNew);
+            $(".dropdown-menu li a").click(function () {
+                $(".btn:first-child").text($(this).text());
+                $(".btn:first-child").val($(this).text());
+
+            })
+         
+        }
+
+        function deleterows(obj) {
+            $(obj).parent().parent().remove();
+        }
 
         function closewindow() {
             $.ajax({
                 type: 'get',
-                url: 'https://hdimage-92465.onmodulus.net/sendmessage?senderid=' + getParameterByName('id') + '',
+                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '',
                 success: function (data) {
                     // use data
                     window.close();
@@ -89,8 +121,8 @@ LICENSE file in the root directory of this source tree.
                 error: function (xhr, ajaxOptions, thrownError) {
                     window.close();
                 }
-            });                
-           
+            });
+
         }
 
         function getParameterByName(name, url) {
@@ -105,15 +137,80 @@ LICENSE file in the root directory of this source tree.
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
     </script>
-  
+</head>
+<body>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <div class="container">
+        <h1 style="font-family:Arial;font-size:18px;color:#07C">Please provide all the cigarette brands  you bought with their pack size & quantity.</h1>
+         <div style="color:blueviolet;font-size:18px;font-weight:bold"> USER ID : <span style="color:blue;font-size:18px;font-weight:bold" id="Userid"></span></div>
+        <table id="cart" class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th style="width: 30%">Product</th>
+                      <th style="width: 30%">Pack Size</th>
+                   <!-- <th style="width: 10%">Price</th>-->
+                    <th style="width: 20%">Quantity</th>
+                  <!--  <th style="width: 22%" class="text-center">Subtotal</th>-->
+                    <th style="width: 20%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-th="Product">
+                        <div class="dropdown">
+                            <select>
+                                <option>Select Brand</option>
+                                 <option>Philip Morris</option>
+                                 <option>Gold Flake</option>
+                                 <option>R.J. Reynolds</option>
+                                 <option>Marlboro</option>
+                                 <option>ITC Classic</option>
+                            </select>
+                                    
+                                    
+                                </div>
+                    </td>
+                      <td data-th="Pack-size">
+                        <div class="dropdown">
 
-    <h1>Webview Demo</h1>
-     <br /><br />
-    <div style="color:blueviolet;font-size:18px;font-weight:bold"> USER ID : <span style="color:blue;font-size:18px;font-weight:bold" id="Userid"></span></div>
-       <br /><br /><br />
-  Take Picture : <input type="file" accept="image/*" capture="camera">
-    <center>
-    <a href="javascript:void(0);" class="myButton" onclick="closewindow()">Close window</a>
-        </center>
+                            <select>
+                                <option>Pack Size</option>
+                                 <option>5</option>
+                                 <option>10</option>
+                                 <option>20</option>
+                                 <option>30</option>
+                                 <option>50</option>
+                            </select>                                    
+                                </div>
+                    </td>
+
+                   <!-- <td data-th="Price">$1.99</td>-->
+                    <td data-th="Quantity">
+                        <br />
+                        <input type="number" class="form-control text-center" value="1">
+                    </td>
+                 <!--   <td data-th="Subtotal" class="text-center">1.99</td>-->
+                    <td class="actions" data-th="">
+                        <button class="btn btn-info btn-sm" onclick="addrows()"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleterows(this)"><i class="fa fa-trash-o" ></i></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="visible-xs">
+                    <td class="text-center"><strong>Total 1.99</strong></td>
+                </tr>
+                <tr>               
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center"><strong>Total $11.99</strong></td>
+                    <td><a href="#" class="btn btn-success btn-block" onclick="closewindow()">Checkout <i class="fa fa-angle-right"></i></a></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <script type="text/javascript">
+	
+    </script>
 </body>
 </html>
