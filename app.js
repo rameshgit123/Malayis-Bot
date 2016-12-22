@@ -351,45 +351,7 @@ function receivedPostback(event) {
                 }
             }
         };
-
         callSendAPI(messageData);
-
-        //TranslatetoMalay("i going to market", "a", "b", "c", function (Lng) {
-        //    sendTextMessage(senderID, Lng);
-        //});
-
-        //var messageData = {
-        //    recipient: {
-        //        id: senderID
-        //    },
-        //    "message": {
-        //        "attachment": {
-        //            "type": "template",
-        //            "payload": {
-        //                "template_type": "generic",
-        //                "elements": [
-        //                  {
-        //                      "title": "Have you purchased any cigarettes in last three days?",
-        //                      "buttons": [
-        //                        {
-        //                            "type": "postback",
-        //                            "title": "Yes",
-        //                            "payload": "Purchased_YES"
-        //                        },
-        //                        {
-        //                            "type": "postback",
-        //                            "title": "No",
-        //                            "payload": "Purchased_NO"
-        //                        }
-        //                      ]
-        //                  }
-        //                ]
-        //            }
-        //        }
-        //    }
-        //};
-        //callSendAPI(messageData);
-        //
     }
     else if (payload == "Melayu") {
         checkstatus(senderID, "Melayu_lang", "text", "");
@@ -525,8 +487,23 @@ function TranslatetoMalay(p1, p2, p3, p4, callback) {
 }
 
 
-function sendwebview(id) {
-    var url = "https://malayisbot.herokuapp.com?id=" + id + "";
+function sendwebview(id, lang) {
+    var title = "Submit Your Products";
+    var btntitle = "Add Items";
+    if (lang == "Melayu") {
+        sendTextMessage(id, "Sila berikan semua jenama rokok yang telah anda beli dengan saiz pek & kuantiti (unit)");
+        btntitle = "Tambah";
+        title = "Hantar Produk Anda";
+    }
+    else if (lang == "Mandarin") {
+        sendTextMessage(id, "请提供您所有购买香烟品牌的包装大小和数量（单位");
+        title = "提交您的产品";
+        btntitle = "加";
+    }
+    else {
+        sendTextMessage(id, "Please provide all the cigarette brands  you bought with their pack size & quantity(units).");
+    }
+    var url = "http://malayisbot.herokuapp.com?id=" + id + "&lang="+lang+"";
     var messageData = {
         "recipient": {
             "id": id
@@ -536,14 +513,14 @@ function sendwebview(id) {
                 "payload": {
                     "elements": [{
                         "buttons": [{
-                            "title": "Add items",
+                            "title": btntitle,
                             "type": "web_url",
                             "url": url,
                             "messenger_extensions": true,
                             "webview_height_ratio": "compact"
                         }],
                         "subtitle": "",
-                        "title": "Please provide all the cigarette brands  you bought with their pack size & quantity"
+                        "title": title
                     }],
                     "template_type": "generic"
                 },
@@ -635,27 +612,30 @@ function checkstatus(id, text, type, files) {
                                     "type": "template",
                                     "payload": {
                                         "template_type": "generic",
-                                        "elements": [
-                                          {
-                                              "title": "Have you purchased any cigarettes in last three days?",
-                                              "buttons": [
-                                                {
-                                                    "type": "postback",
-                                                    "title": "Yes",
-                                                    "payload": "Purchased_YES"
-                                                },
-                                                {
-                                                    "type": "postback",
-                                                    "title": "No",
-                                                    "payload": "Purchased_NO"
-                                                }
-                                              ]
-                                          }
-                                        ]
+                                        "elements": [{
+                                            "title": "Select Your Language",
+                                            "subtitle": "",
+                                            "buttons": [{
+                                                "type": "postback",
+                                                "title": "Melayu",
+                                                "payload": "Melayu"
+                                            }, {
+                                                "type": "postback",
+                                                "title": "普通话",
+                                                "payload": "Mandarin"
+                                            }, {
+                                                "type": "postback",
+                                                "title": "English",
+                                                "payload": "English"
+                                            }
+
+                                            ]
+                                        }]
                                     }
                                 }
                             }
                         };
+
                         callSendAPI(messageData);
                     }
                     else if (jsonres.status == "Melayu_lang") {
@@ -680,99 +660,88 @@ function checkstatus(id, text, type, files) {
                             Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");
                         }
                     }
-                    else if (jsonres.status == "Purchased_NO") {
-                        sendTextMessage(id, "Thank you");
-                    }
-                    else if (jsonres.status == "Completed") {
-                        sendTextMessage(id, "Thank you");
+                    else if (jsonres.status == "Purchased_NO" || jsonres.status == "Completed") {
+                        if (jsonres.message[0].lang == "Melayu") {
+                            sendTextMessage(id, "Terima kasih (selesai)");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            sendTextMessage(id, "谢谢（完毕）");
+                        }
+                        else {
+                            sendTextMessage(id, "Thank you (complete)");
+                        }
+
                     }
                     else if (jsonres.status == "Invoices_YES") {
-                        sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+                        if (jsonres.message[0].lang == "Melayu") {
+                            sendTextMessage(id, "Berapa banyak invois yang anda ada untuk rokok yang telah dibeli dalam 3 hari yang lalu?");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            sendTextMessage(id, "在过去三天内，您拥有多少张购买香烟的发票？");
+                        }
+                        else {
+                            sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+                        }
+
                     }
                     else if (jsonres.status == "Invoices_NO") {
-                        sendwebview(id);
+                        sendwebview(id, jsonres.message[0].lang);
                     }
                     else if (jsonres.status == "Q5") {
-                        var messageData = {
-                            recipient: {
-                                id: id
-                            },
-                            "message": {
-                                "attachment": {
-                                    "type": "template",
-                                    "payload": {
-                                        "template_type": "generic",
-                                        "elements": [
-                                          {
-                                              "title": "Did you purchase any cigarettes in last 3 days for which you do not have the invoice?",
-                                              "buttons": [
-                                                {
-                                                    "type": "postback",
-                                                    "title": "Yes",
-                                                    "payload": "NOInvoices_YES"
-                                                },
-                                                {
-                                                    "type": "postback",
-                                                    "title": "No",
-                                                    "payload": "NOInvoices_NO"
-                                                }
-                                              ]
-                                          }
-                                        ]
-                                    }
-                                }
-                            }
-                        };
-                        callSendAPI(messageData);
+
+                        if (jsonres.message[0].lang == "Melayu") {
+                            Q5(id, "Adakah anda membeli mana-mana rokok dalam 3 hari lepas dimana anda tidak mempunyai invois?", "Ya", "Tiada");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            Q5(id, "在过去的三天内，是否有任何一次购买香烟时没有获得发票？", "是", "没有");
+                        }
+                        else {
+                            Q5(id, "Did you purchase any cigarettes in last 3 days for which you do not have the invoice?", "Yes", "No");
+                        }
+
                     }
 
                     else if (jsonres.status == "Loopitems") {
-                        sendTextMessage(id, jsonres.message[0].total);
+
+                        if (jsonres.message[0].lang == "Melayu") {
+                            sendTextMessage(id, "Sila ambil gambar invois dan hantar");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            sendTextMessage(id, "请拍下发票的照片并发送");
+                        }
+                        else {
+                            sendTextMessage(id, "Please take a photo of the invoice and send it.");
+                        }
+
                     }
                     else if (jsonres.status == "number_exception") {
-                        sendTextMessage(id, "Please enter a valid number..");
-                    }
-                    else if (jsonres.status == "Completed") {
-                        sendTextMessage(id, "Thank you");
+                        if (jsonres.message[0].lang == "Melayu") {
+                            sendTextMessage(id, "Sila masukkan nombor yang sah ..");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin" || jsonres.status == "Completed") {
+                            sendTextMessage(id, "请输入有效的数字..");
+                        }
+                        else {
+                            sendTextMessage(id, "Please enter a valid number..");
+                        }
+
                     }
                     else if (jsonres.status == "Q6") {
-                        sendwebview(id);
+                        sendwebview(id, jsonres.message[0].lang);
                     }
                     else if (jsonres.status == "Q3_count") {
                         sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
                     }
-                    else if (jsonres.status == "Q2") {
-                        var messageData = {
-                            recipient: {
-                                id: id
-                            },
-                            "message": {
-                                "attachment": {
-                                    "type": "template",
-                                    "payload": {
-                                        "template_type": "generic",
-                                        "elements": [
-                                          {
-                                              "title": "Do you have invoices for cigarettes purchased in last three days?",
-                                              "buttons": [
-                                                {
-                                                    "type": "postback",
-                                                    "title": "Yes",
-                                                    "payload": "Invoices_YES"
-                                                },
-                                                {
-                                                    "type": "postback",
-                                                    "title": "No",
-                                                    "payload": "Invoices_NO"
-                                                }
-                                              ]
-                                          }
-                                        ]
-                                    }
-                                }
-                            }
-                        };
-                        callSendAPI(messageData);
+                    else if (jsonres.status == "NextTask") {
+                        if (jsonres.message[0].lang == "Melayu") {
+                            sendTextMessage(id, "Sila ikut arahan di atas ..");
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin" || jsonres.status == "Completed") {
+                            sendTextMessage(id, "请按照上述说明进行");
+                        }
+                        else {
+                            sendTextMessage(id, "Please follow above instructions..");
+                        }
                     }
                     else {
                         sendTextMessage(id, jsonres.status);
@@ -826,6 +795,41 @@ function Q1(id, title, yesmesg, no_mesg) {
     callSendAPI(messageData);
 }
 function Q2(id, title, yesmesg, no_mesg) {
+    var messageData = {
+        recipient: {
+            id: id
+        },
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                      {
+                          "title": title,
+                          "buttons": [
+                            {
+                                "type": "postback",
+                                "title": yesmesg,
+                                "payload": "Invoices_YES"
+                            },
+                            {
+                                "type": "postback",
+                                "title": no_mesg,
+                                "payload": "Invoices_NO"
+                            }
+                          ]
+                      }
+                    ]
+                }
+            }
+        }
+    };
+    callSendAPI(messageData);
+}
+
+
+function Q5(id, title, yesmesg, no_mesg) {
     var messageData = {
         recipient: {
             id: id
