@@ -354,7 +354,7 @@ function receivedPostback(event) {
 
         callSendAPI(messageData);
 
-        TranslatetoMalay("Hai this ramesh", "a", "b", "c", function (Lng) {
+        TranslatetoMalay("i going to market", "a", "b", "c", function (Lng) {
             sendTextMessage(senderID, Lng);
         });
 
