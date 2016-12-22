@@ -255,17 +255,9 @@ function receivedMessage(event) {
         return;
     }
 
-    if (messageText) {
+    if (messageText) {       
 
-        // If we receive a text message, check to see if it matches any special
-        // keywords and send back the corresponding example. Otherwise, just echo
-        // the text we received.         
-        //sendTextMessage(senderID, messageText);
-
-        TranslatetoMalay(messageText, "a", "b", "c", function (Lng) {
-            sendTextMessage(senderID, Lng);
-        });
-        // checkstatus(senderID, messageText, "text", "");
+        checkstatus(senderID, messageText, "text", "");
 
     } else if (messageAttachments) {
         checkstatus(senderID, "file", messageAttachments[0].type, messageAttachments);
