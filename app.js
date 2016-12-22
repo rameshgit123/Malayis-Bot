@@ -350,7 +350,37 @@ function receivedPostback(event) {
   }
   else if (payload == "Purchased_YES")
   {
-      checkstatus(senderID, "USER_DEFINED_PAYLOAD", "text", "");
+      var messageData = {
+          recipient: {
+              id: senderID
+          },
+          "message": {
+              "attachment": {
+                  "type": "template",
+                  "payload": {
+                      "template_type": "generic",
+                      "elements": [
+                        {
+                            "title": "Do you have invoices for cigarettes purchased in last three days?",
+                            "buttons": [
+                              {
+                                  "type": "postback",
+                                  "title": "Yes",
+                                  "payload": "Invoices_YES"
+                              },
+                              {
+                                  "type": "postback",
+                                  "title": "No",
+                                  "payload": "Invoices_NO"
+                              }
+                            ]
+                        }
+                      ]
+                  }
+              }
+          }
+      };
+      callSendAPI(messageData);
   }
   else if (payload == "Purchased_NO")
   {
