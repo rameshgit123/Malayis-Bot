@@ -111,17 +111,22 @@
         }
 
         function closewindow() {
-            $.ajax({
-                type: 'get',
-                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '',
-                success: function (data) {
-                    // use data
-                    window.close();
+		alert("ok");
+            $.ajax(
+    {
+        url  : "http://202.89.107.58:80/BOTAPI/api/AddBrands",
+        type : "POST",
+        data : {
+                    "employees":
+                    [
+                        { "firstName": "John", "lastName": "Doe" },
+                        { "firstName": "Anna", "lastName": "Smith" },
+                        { "firstName": "Peter", "lastName": "Jones" }
+                    ]
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    window.close();
-                }
-            });
+        success: function (data) {alert("success");},
+        error: function () {alert("Error");}
+    });
 
         }
 
