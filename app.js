@@ -652,7 +652,7 @@ var http = require('http');
        }
 
        else if (jsonres.status == "Loopitems") {
-           sendTextMessage(id, jsonres.message.total);
+           sendTextMessage(id, jsonres.message[0].total);
        }
        else if (jsonres.status == "number_exception") {
            sendTextMessage(id, "Please enter a valid number..");
