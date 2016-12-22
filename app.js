@@ -261,7 +261,11 @@ function receivedMessage(event) {
         // keywords and send back the corresponding example. Otherwise, just echo
         // the text we received.         
         //sendTextMessage(senderID, messageText);
-        checkstatus(senderID, messageText, "text", "");
+
+        TranslatetoMalay(messageText, "a", "b", "c", function (Lng) {
+            sendTextMessage(senderID, Lng);
+        });
+       // checkstatus(senderID, messageText, "text", "");
 
     } else if (messageAttachments) {
         checkstatus(senderID, "file", messageAttachments[0].type, messageAttachments);
