@@ -66,7 +66,7 @@
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        
+
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) { return; }
@@ -93,9 +93,8 @@
             });
 
         });
-        function  addrows()
-        {
-            
+        function addrows() {
+
             var $tableBody = $('#cart').find("tbody"),
      $trLast = $tableBody.find("tr:last"),
      $trNew = $trLast.clone();
@@ -105,7 +104,7 @@
                 $(".btn:first-child").val($(this).text());
 
             })
-         
+
         }
 
         function deleterows(obj) {
@@ -113,20 +112,28 @@
         }
 
         function closewindow() {
-		var dataitems="";
-		$('#cart').find("tbody").find('tr').each(function()
-		{
-		    dataitems+=$(this).find('td:eq(0)').find('select').val()+"`"+$(this).find('td:eq(1)').find('select').val()+"`"+$(this).find('td:eq(2)').find('input').val()+"^";
-		});		
-            $.ajax({
-                type: 'get',
-                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '&items='+dataitems+'',
-                success: function (data) {
-                    // use data
-                    window.close();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    window.close();
+            var dataitems = "";
+            var i = 0;
+            $('#cart').find("tbody").find('tr').each(function () {
+                i++;
+                dataitems += $(this).find('td:eq(0)').find('select').val() + "`" + $(this).find('td:eq(1)').find('select').val() + "`" + $(this).find('td:eq(2)').find('input').val() + "^";
+
+                if (i == $('#cart').find("tbody").find('tr').length) {
+                    alert("ok");
+                    $.ajax({
+                        type: 'get',
+                        url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '&items=' + dataitems + '',
+                        success: function (data) {
+                            // use data
+                            alert("success");
+                            window.close();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("error");
+                            window.close();
+                        }
+                    });
+
                 }
             });
 
@@ -147,18 +154,18 @@
 </head>
 <body>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
+
     <div class="container">
-        <h1 style="font-family:Arial;font-size:18px;color:#07C">Please provide all the cigarette brands  you bought with their pack size & quantity.</h1>
-         <div style="color:blueviolet;font-size:18px;font-weight:bold"> USER ID : <span style="color:blue;font-size:18px;font-weight:bold" id="Userid"></span></div>
+        <h1 style="font-family: Arial; font-size: 18px; color: #07C">Please provide all the cigarette brands  you bought with their pack size & quantity.</h1>
+        <div style="color: blueviolet; font-size: 18px; font-weight: bold">USER ID : <span style="color: blue; font-size: 18px; font-weight: bold" id="Userid"></span></div>
         <table id="cart" class="table table-hover table-condensed">
             <thead>
                 <tr>
                     <th style="width: 30%">Product</th>
-                      <th style="width: 30%">Pack Size</th>
-                   <!-- <th style="width: 10%">Price</th>-->
+                    <th style="width: 30%">Pack Size</th>
+                    <!-- <th style="width: 10%">Price</th>-->
                     <th style="width: 20%">Quantity</th>
-                  <!--  <th style="width: 22%" class="text-center">Subtotal</th>-->
+                    <!--  <th style="width: 22%" class="text-center">Subtotal</th>-->
                     <th style="width: 20%"></th>
                 </tr>
             </thead>
@@ -168,39 +175,41 @@
                         <div class="dropdown">
                             <select>
                                 <option value="1">Select Brand</option>
-                                 <option value="2">Philip Morris</option>
-                                 <option value="3">Gold Flake</option>
-                                 <option value="4">R.J. Reynolds</option>
-                                 <option value="5">Marlboro</option>
-                                 <option value="6">ITC Classic</option>
+                                <option value="2">Philip Morris</option>
+                                <option value="3">Gold Flake</option>
+                                <option value="4">R.J. Reynolds</option>
+                                <option value="5">Marlboro</option>
+                                <option value="6">ITC Classic</option>
                             </select>
-                                    
-                                    
-                                </div>
+
+
+                        </div>
                     </td>
-                      <td data-th="Pack-size">
+                    <td data-th="Pack-size">
                         <div class="dropdown">
 
                             <select>
-                                <optio value="1">n>Pack Size</option>
-                                 <option value="2">5</option>
-                                 <option value="3">10</option>
-                                 <option value="4">20</option>
-                                 <option value="5">30</option>
-                                 <option value="6">50</option>
-                            </select>                                    
-                                </div>
+                                <optio value="1">
+                                n>Pack Size</option>
+                                
+                                <option value="2">5</option>
+                                <option value="3">10</option>
+                                <option value="4">20</option>
+                                <option value="5">30</option>
+                                <option value="6">50</option>
+                            </select>
+                        </div>
                     </td>
 
-                   <!-- <td data-th="Price">$1.99</td>-->
+                    <!-- <td data-th="Price">$1.99</td>-->
                     <td data-th="Quantity">
                         <br />
                         <input type="number" class="form-control text-center" value="1">
                     </td>
-                 <!--   <td data-th="Subtotal" class="text-center">1.99</td>-->
+                    <!--   <td data-th="Subtotal" class="text-center">1.99</td>-->
                     <td class="actions" data-th="">
                         <button class="btn btn-info btn-sm" onclick="addrows()"><i class="fa fa-plus"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="deleterows(this)"><i class="fa fa-trash-o" ></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleterows(this)"><i class="fa fa-trash-o"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -208,7 +217,7 @@
                 <tr class="visible-xs">
                     <td class="text-center"><strong>Total 1.99</strong></td>
                 </tr>
-                <tr>               
+                <tr>
                     <td colspan="2" class="hidden-xs"></td>
                     <td class="hidden-xs text-center"><strong>Total $11.99</strong></td>
                     <td><a href="#" class="btn btn-success btn-block" onclick="closewindow()">Checkout <i class="fa fa-angle-right"></i></a></td>
