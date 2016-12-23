@@ -63,11 +63,11 @@
                 }
         }
   </style>
-    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-        (function (d, s, id) {
+            (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) { return; }
             js = d.createElement(s); js.id = id;
@@ -75,13 +75,13 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'Messenger'));
 
-        window.extAsyncInit = function () {
+        window.extAsyncInit = function () {           
             MessengerExtensions.getUserID(function success(uids) {
                 var psid = uids.psid;
                 $("#Userid").html(psid);
             }, function error(err) {
-                //alert(err);
-            });
+                alert(err);
+            });          
 
         };
 
@@ -112,30 +112,17 @@
         }
 
         function closewindow() {
-            var dataitems = "";
-            var i = 0;
-            $('#cart').find("tbody").find('tr').each(function () {
-                i++;
-                dataitems += $(this).find('td:eq(0)').find('select').val() + "`" + $(this).find('td:eq(1)').find('select').val() + "`" + $(this).find('td:eq(2)').find('input').val() + "^";
-
-                if (i == $('#cart').find("tbody").find('tr').length) {
-                    alert("ok");
-                    $.ajax({
-                        type: 'get',
-                        url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '&items=' + dataitems + '',
-                        success: function (data) {
-                            // use data
-                            alert("success");
-                            window.close();
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("error");
-                            window.close();
-                        }
-                    });
-
+           $.ajax({
+                type: 'get',
+                url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items=abc',
+                success: function (data) {
+                    // use data
+                    window.close();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    window.close();
                 }
-            });
+            });     
 
         }
 
@@ -156,6 +143,8 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
+	      <br /><br />
+    <div style="color:blueviolet;font-size:18px;font-weight:bold"> USER ID : <span style="color:blue;font-size:18px;font-weight:bold" id="Userid"></span></div>
         <h1 style="font-family: Arial; font-size: 18px; color: #07C">Please provide all the cigarette brands  you bought with their pack size & quantity.</h1>
         <div style="color: blueviolet; font-size: 18px; font-weight: bold">USER ID : <span style="color: blue; font-size: 18px; font-weight: bold" id="Userid"></span></div>
         <table id="cart" class="table table-hover table-condensed">
