@@ -117,11 +117,10 @@
 		$('#cart').find("tbody").find('tr').each(function()
 		{
 		    dataitems+=$(this).find('td:eq(0)').find('select').val()+"`"+$(this).find('td:eq(1)').find('select').val()+"`"+$(this).find('td:eq(2)').find('input').val()+"^";
-		});
-		alert(dataitems);
+		});		
             $.ajax({
                 type: 'get',
-                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '',
+                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '&items='+dataitems+'',
                 success: function (data) {
                     // use data
                     window.close();
