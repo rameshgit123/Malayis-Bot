@@ -515,7 +515,7 @@ function sendwebview(id, lang) {
                             "type": "web_url",
                             "url": url,
                             "messenger_extensions": true,
-                            "webview_height_ratio": "full"
+                            "webview_height_ratio": "tall"
                         }],
                         "subtitle": "",
                         "title": title
