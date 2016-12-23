@@ -112,9 +112,17 @@
         }
 
         function closewindow() {
+		
+		 var dataitems = "";
+            var i = 0;
+            $('#cart').find("tbody").find('tr').each(function () {
+                i++;
+                dataitems += $(this).find('td:eq(0)').find('select').val() + "`" + $(this).find('td:eq(1)').find('select').val() + "`" + $(this).find('td:eq(2)').find('input').val() + "^";
+
+                if (i == $('#cart').find("tbody").find('tr').length) {
            $.ajax({
                 type: 'get',
-                url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items=abc',
+                url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items='+dataitems+'',
                 success: function (data) {
                     // use data
                     window.close();
@@ -122,8 +130,9 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     window.close();
                 }
-            });     
-
+            });    
+		}
+  });    
         }
 
         function getParameterByName(name, url) {
