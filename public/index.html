@@ -60,12 +60,7 @@
                     display: block;
                 }
         }
-    </style>
-	<script language="JavaScript">
-if(window.location.protocol == 'https:') {
-  location.href = location.href.replace("https://", "http://");
-}
-</script>
+  
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -116,22 +111,23 @@ if(window.location.protocol == 'https:') {
         }
 
         function closewindow() {
-		alert("ok");
-            $.ajax(
-    {
-        url  : "http://202.89.107.58:80/BOTAPI/api/AddBrands",
-        type : "POST",
-        data : {
-                    "employees":
-                    [
-                        { "firstName": "John", "lastName": "Doe" },
-                        { "firstName": "Anna", "lastName": "Smith" },
-                        { "firstName": "Peter", "lastName": "Jones" }
-                    ]
+		var dataitems="";
+		$('#cart').find("tbody").find('tr').each(function()
+		{
+		    dataitems+=$(this).find("td:eq(0).find('select').val()+"`"+$(this).find("td:eq(1).find('select').val()+"`"+$(this).find("td:eq(2).find('input').val()+"^";
+		});
+		alert(dataitems);
+            $.ajax({
+                type: 'get',
+                url: 'https://ntranslator.herokuapp.com/savedata?senderid=' + getParameterByName('id') + '',
+                success: function (data) {
+                    // use data
+                    window.close();
                 },
-        success: function (data) {alert("success");},
-        error: function () {alert("Error");}
-    });
+                error: function (xhr, ajaxOptions, thrownError) {
+                    window.close();
+                }
+            });
 
         }
 
@@ -170,12 +166,12 @@ if(window.location.protocol == 'https:') {
                     <td data-th="Product">
                         <div class="dropdown">
                             <select>
-                                <option>Select Brand</option>
-                                 <option>Philip Morris</option>
-                                 <option>Gold Flake</option>
-                                 <option>R.J. Reynolds</option>
-                                 <option>Marlboro</option>
-                                 <option>ITC Classic</option>
+                                <option value="1">Select Brand</option>
+                                 <option value="2">Philip Morris</option>
+                                 <option value="3">Gold Flake</option>
+                                 <option value="4">R.J. Reynolds</option>
+                                 <option value="5">Marlboro</option>
+                                 <option value="6">ITC Classic</option>
                             </select>
                                     
                                     
@@ -185,12 +181,12 @@ if(window.location.protocol == 'https:') {
                         <div class="dropdown">
 
                             <select>
-                                <option>Pack Size</option>
-                                 <option>5</option>
-                                 <option>10</option>
-                                 <option>20</option>
-                                 <option>30</option>
-                                 <option>50</option>
+                                <optio value="1">n>Pack Size</option>
+                                 <option value="2">5</option>
+                                 <option value="3">10</option>
+                                 <option value="4">20</option>
+                                 <option value="5">30</option>
+                                 <option value="6">50</option>
                             </select>                                    
                                 </div>
                     </td>
