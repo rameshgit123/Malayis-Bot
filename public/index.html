@@ -116,7 +116,7 @@
 		var dataitems="";
 		$('#cart').find("tbody").find('tr').each(function()
 		{
-		    dataitems+=$(this).find("td:eq(0).find('select').val()+"`"+$(this).find("td:eq(1).find('select').val()+"`"+$(this).find("td:eq(2).find('input').val()+"^";
+		    dataitems+=$(this).find('td:eq(0)').find('select').val()+"`"+$(this).find('td:eq(1)').find('select').val()+"`"+$(this).find('td:eq(2)').find('input').val()+"^";
 		});
 		alert(dataitems);
             $.ajax({
