@@ -66,7 +66,8 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 
 
 app.get('/sendmessage', function (req, res) {
-    sendTextMessage(req.query['senderid'], "Window Closed");
+    sendTextMessage(req.query['senderid'], "Data submited");
+    checkstatus(req.query['senderid'], "Webview_Items", req.query['items'], "");
     res.sendStatus(200);
 });
 
