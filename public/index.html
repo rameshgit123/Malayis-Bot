@@ -67,7 +67,7 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-            (function (d, s, id) {
+        (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) { return; }
             js = d.createElement(s); js.id = id;
@@ -75,13 +75,13 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'Messenger'));
 
-        window.extAsyncInit = function () {           
+        window.extAsyncInit = function () {
             MessengerExtensions.getUserID(function success(uids) {
                 var psid = uids.psid;
                 $("#Userid").html(psid);
             }, function error(err) {
-               // alert(err);
-            });          
+                // alert(err);
+            });
 
         };
 
@@ -112,27 +112,27 @@
         }
 
         function closewindow() {
-		
-		 var dataitems = "";
+
+            var dataitems = "";
             var i = 0;
             $('#cart').find("tbody").find('tr').each(function () {
                 i++;
                 dataitems += $(this).find('td:eq(0)').find('select').val() + "`" + $(this).find('td:eq(1)').find('select').val() + "`" + $(this).find('td:eq(2)').find('input').val() + "^";
 
                 if (i == $('#cart').find("tbody").find('tr').length) {
-           $.ajax({
-                type: 'get',
-                url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items='+dataitems+'',
-                success: function (data) {
-                    // use data
-                    window.close();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    window.close();
+                    $.ajax({
+                        type: 'get',
+                        url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items=' + dataitems + '',
+                        success: function (data) {
+                            // use data
+                            window.close();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            window.close();
+                        }
+                    });
                 }
-            });    
-		}
-  });    
+            });
         }
 
         function getParameterByName(name, url) {
@@ -152,8 +152,9 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
-	      <br /><br />
-    
+        <br />
+        <br />
+
         <h1 style="font-family: Arial; font-size: 18px; color: #07C">Please provide all the cigarette brands  you bought with their pack size & quantity.</h1>
         <div style="color: blueviolet; font-size: 18px; font-weight: bold">USER ID : <span style="color: blue; font-size: 18px; font-weight: bold" id="Userid"></span></div>
         <table id="cart" class="table table-hover table-condensed">
@@ -172,12 +173,32 @@
                     <td data-th="Product">
                         <div class="dropdown">
                             <select>
-                                <option value="1">Select Brand</option>
-                                <option value="2">Philip Morris</option>
-                                <option value="3">Gold Flake</option>
-                                <option value="4">R.J. Reynolds</option>
-                                <option value="5">Marlboro</option>
-                                <option value="6">ITC Classic</option>
+                                <option value="1">9th Century</option>
+                                <option value="2">A380</option>
+                                <option value="3">Benson & Hedges</option>
+                                <option value="4">Bosston</option>
+                                <option value="5">Camel</option>
+                                <option value="6">Capital</option>
+                                <option value="7">Chesterfield</option>
+                                <option value="8">De'Leaf</option>
+                                <option value="9">Dunhill</option>
+                                <option value="10">International Peter Stuyvesant</option>
+                                <option value="11">Kent</option>
+                                <option value="12">L&M</option>
+                                <option value="13">Lucky Strike</option>
+                                <option value="14">Manchester</option>
+                                <option value="15">Marlboro</option>
+                                <option value="16">Mevius</option>
+                                <option value="17">Mone</option>
+                                <option value="18">Pall Mall</option>
+                                <option value="19">Peter Stuyvesant</option>
+                                <option value="20">Promax</option>
+                                <option value="21">Saat</option>
+                                <option value="22">Sampoerna A</option>
+                                <option value="23">Soho</option>
+                                <option value="24">Willson</option>
+                                <option value="25">Winston</option>
+
                             </select>
 
 
@@ -187,12 +208,12 @@
                         <div class="dropdown">
 
                             <select>
-                                <optio value="1">Pack Size</option>                                
-                                <option value="2">5</option>
-                                <option value="3">10</option>
-                                <option value="4">20</option>
-                                <option value="5">30</option>
-                                <option value="6">50</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
                             </select>
                         </div>
                     </td>
