@@ -694,7 +694,7 @@ function checkstatus(id, text, type, files) {
                             Q5(id, "在过去的三天内，是否有任何一次购买香烟时没有获得发票？", "是", "没有");
                         }
                         else {
-                            Q5(id, "Did you purchase any cigarettes in last 3 days for which you do not have the invoice?", "Yes", "No");
+                            Q5(id, "Did you purchase any cigarettes in last 3 days for which you do not have invoice?", "Yes", "No");
                         }
 
                     }
