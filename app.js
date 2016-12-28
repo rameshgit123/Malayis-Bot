@@ -71,7 +71,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 
 
 app.get('/sendmessage', function (req, res) {
-    sendTextMessage(req.query['senderid'], "Data submited");
+    //sendTextMessage(req.query['senderid'], "Data submited");
     checkstatus(req.query['senderid'], "Webview_Items", req.query['items'], "");
     res.sendStatus(200);
 });
@@ -658,6 +658,18 @@ function checkstatus(id, text, type, files) {
                             Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");
                         }
                     }
+                    else if(jsonres.status=="Location_details")
+                    {
+                        if (jsonres.message[0].lang == "Melayu") {                           
+                            sendTextMessage(id, "Sila berkongsi lokasi anda.");        
+                        }
+                        else if (jsonres.message[0].lang == "Mandarin") {
+                            sendTextMessage(id, "请分享您的位置。");        
+                        }
+                        else {
+                            sendTextMessage(id, "Please share your location.");                            
+                        }
+                    }
                     else if (jsonres.status == "Purchased_NO" || jsonres.status == "Completed") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Terima kasih (selesai)");
@@ -716,7 +728,7 @@ function checkstatus(id, text, type, files) {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila masukkan nombor yang sah ..");
                         }
-                        else if (jsonres.message[0].lang == "Mandarin" || jsonres.status == "Completed") {
+                        else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请输入有效的数字..");
                         }
                         else {
@@ -734,7 +746,7 @@ function checkstatus(id, text, type, files) {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila ikut arahan di atas ..");
                         }
-                        else if (jsonres.message[0].lang == "Mandarin" || jsonres.status == "Completed") {
+                        else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请按照上述说明进行");
                         }
                         else {
