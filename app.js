@@ -79,13 +79,13 @@ app.get('/sendmessage', function (req, res) {
 
 app.get('/Runtask', function (req, res) {
 
-    if (req.query['lang'] == "Melayu_lang") {
+    if (req.query['lang'] == "Melayu") {
         Q1(req.query['senderid'], "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
     }
-    else if (req.query['lang'] == "Mandarin_lang") {
+    else if (req.query['lang'] == "Mandarin") {
         Q1(req.query['senderid'], "您在过去三天里是否购买了香烟？", "是", "没有");
     }
-    else if (req.query['lang'] == "English_lang") {
+    else {
         Q1(req.query['senderid'], "Have you purchased any cigarettes in last three days?", "Yes", "No");
     }
     res.sendStatus(200);
