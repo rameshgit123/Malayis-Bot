@@ -76,6 +76,21 @@ app.get('/sendmessage', function (req, res) {
     res.sendStatus(200);
 });
 
+
+app.get('/Runtask', function (req, res) {
+
+    if (req.query['lang'] == "Melayu_lang") {
+        Q1(req.query['senderid'], "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
+    }
+    else if (req.query['lang'] == "Mandarin_lang") {
+        Q1(req.query['senderid'], "您在过去三天里是否购买了香烟？", "是", "没有");
+    }
+    else if (req.query['lang'] == "English_lang") {
+        Q1(req.query['senderid'], "Have you purchased any cigarettes in last three days?", "Yes", "No");
+    }
+    res.sendStatus(200);
+});
+
 /*
  * Use your own validation token. Check that the token used in the Webhook 
  * setup is the same token used here.
