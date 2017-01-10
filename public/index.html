@@ -127,9 +127,10 @@
                             // use data
                             window.close();
                         },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            window.close();
-                        }
+                        timeout: 1000,
+    error: function(jqXHR, textStatus, errorThrown) {
+         window.close();
+    }
                     });
                 }
             });
