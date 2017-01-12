@@ -125,13 +125,23 @@
                         url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items=' + dataitems + '',
                         success: function (data) {
                             // use data
+				MessengerExtensions.requestCloseBrowser(function success() {
+  
+      }, function error(err) {
+  
+      });
 				alert("success");
 				window.open('', '_self', ''); //bug fix
                                   window.close();  
                         },
                         timeout: 1000,
     error: function(jqXHR, textStatus, errorThrown) {
-	    alert("error");
+	    MessengerExtensions.requestCloseBrowser(function success() {
+  
+      }, function error(err) {
+  
+      });
+	    alert("error");	    
 	  window.open('', '_self', ''); //bug fix
                   window.close();  
     }
