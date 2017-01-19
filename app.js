@@ -652,6 +652,7 @@ function checkstatus(id, text, type, files) {
                         callSendAPI(messageData);
                     }
                     else if (jsonres.status == "Melayu_lang") {
+                        
                         Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
                     }
                     else if (jsonres.status == "Mandarin_lang") {
@@ -663,8 +664,8 @@ function checkstatus(id, text, type, files) {
 
 
                     else if (jsonres.status == "Purchased_YES") {
-                        if (jsonres.message[0].lang == "Melayu") {
-                            Q2(id, "Adakah anda mempunyai invois untuk rokok yang telah dibeli dalam tiga hari yang lalu?", "Ya", "Tiada");
+                        if (jsonres.message[0].lang == "Melayu") {                           
+                            Q2(id, "Adakah anda mempunyai invois rokok tersebut?", "Ya", "Tiada");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");
