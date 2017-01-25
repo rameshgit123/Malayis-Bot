@@ -676,8 +676,9 @@ function checkstatus(id, text, type, files) {
                     }
                     else if(jsonres.status=="Location_details")
                     {
-                        if (jsonres.message[0].lang == "Melayu") {                           
-                            sendTextMessage(id, "Sila berkongsi lokasi anda.");        
+                        if (jsonres.message[0].lang == "Melayu") {   
+                        
+                            sendTextMessage(id, "Sila kongsikan lokasi anda.");        
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请分享您的位置。");        
@@ -715,8 +716,8 @@ function checkstatus(id, text, type, files) {
                     }
                     else if (jsonres.status == "Q5") {
 
-                        if (jsonres.message[0].lang == "Melayu") {
-                            Q5(id, "Adakah anda membeli mana-mana rokok dalam 3 hari lepas dimana anda tidak mempunyai invois?", "Ya", "Tiada");
+                        if (jsonres.message[0].lang == "Melayu") {                        
+                            Q5(id, "Didalam pembelian tersebut, adakah diantaranya tiada invois?", "Ya", "Tiada");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             Q5(id, "在过去的三天内，是否有任何一次购买香烟时没有获得发票？", "是", "没有");
@@ -1051,4 +1052,3 @@ app.listen(app.get('port'), function () {
 });
 
 module.exports = app;
-
