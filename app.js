@@ -369,12 +369,15 @@ function receivedPostback(event) {
     }
     else if (payload == "Melayu") {
         checkstatus(senderID, "Melayu_lang", "text", "");
+        writelog(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "BOT");
     }
     else if (payload == "Mandarin") {
         checkstatus(senderID, "Mandarin_lang", "text", "");
+        writelog(id, "您在过去三天里是否购买了香烟？", "BOT");
     }
     else if (payload == "English") {
         checkstatus(senderID, "English_lang", "text", "");
+        writelog(id, "Have you purchased any cigarettes in last three days?", "BOT");
     }
     else if (payload == "Purchased_YES") {
         checkstatus(senderID, "Purchased_YES", "text", "");
@@ -715,15 +718,15 @@ function checkstatus(id, text, type, files) {
                         
                         Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
 
-                        writelog(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "BOT");
+                       
                     }
                     else if (jsonres.status == "Mandarin_lang") {
                         Q1(id, "您在过去三天里是否购买了香烟？", "是", "没有");
-                        writelog(id, "您在过去三天里是否购买了香烟？", "BOT");
+                      
                     }
                     else if (jsonres.status == "English_lang") {
                         Q1(id, "Have you purchased any cigarettes in last three days?", "Yes", "No");
-                        writelog(id, "Have you purchased any cigarettes in last three days?", "BOT");
+                      
 
                     }
 
