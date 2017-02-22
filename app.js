@@ -396,6 +396,10 @@ function receivedPostback(event) {
 
 }
 
+
+
+
+
 /*
  * Message Read Event
  *
@@ -505,6 +509,7 @@ function sendwebview(id, lang) {
     var btntitle = "Add Items";
     if (lang == "Melayu") {
         sendTextMessage(id, "Sila berikan semua jenama rokok yang telah anda beli dengan saiz pek & kuantiti (unit)");
+        writelog(id, "Sila berikan semua jenama rokok yang telah anda beli dengan saiz pek & kuantiti (unit)", "BOT")
         btntitle = "Tambah";
         title = "Hantar Produk Anda";
     }
@@ -512,9 +517,11 @@ function sendwebview(id, lang) {
         sendTextMessage(id, "请提供您所有购买香烟品牌的包装大小和数量（单位");
         title = "提交您的产品";
         btntitle = "加";
+        writelog(id, "请提供您所有购买香烟品牌的包装大小和数量（单位", "BOT")
     }
     else {
         sendTextMessage(id, "Please provide all the cigarette brands  you bought with their pack size & quantity(units).");
+        writelog(id, "Please provide all the cigarette brands  you bought with their pack size & quantity(units).", "BOT")
     }
     var url = "https://malayisbot.herokuapp.com?id=" + id + "&lang="+lang+"";
     var messageData = {
@@ -546,6 +553,57 @@ function sendwebview(id, lang) {
 
 
 }
+
+
+//write logfile
+
+//write logfile
+function writelog(sid, message, sendertype) {
+
+
+    var http = require('http');
+    var rid = "244341495958818";
+    var logdetails = JSON.stringify({
+        'sid': '' + sid + '',
+        'sendertype': '' + sendertype + '',
+        'message': '' + message + '',
+        'rid': '' + rid + ''
+    });
+
+
+    //5
+    var extServeroptionspost = {
+        host: '202.89.107.58',
+        port: '80',
+        path: '/BOTAPI/api/writemolog',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': logdetails.length
+        }
+    };
+
+
+
+    //6
+    var reqPost = http.request(extServeroptionspost, function (res) {
+        res.on('data', function (data) {
+            process.stdout.write(data);
+            var status = data.toString("utf8").replace('"', '').replace('"', '');
+            console.log(status);
+        });
+    });
+
+
+    // 7
+    reqPost.write(logdetails);
+    reqPost.end();
+    reqPost.on('error', function (e) {
+        console.error(e);
+    });
+
+}
+
 /*check status of mission*/
 
 function checkstatus(id, text, type, files) {
@@ -650,64 +708,83 @@ function checkstatus(id, text, type, files) {
                         };
 
                         callSendAPI(messageData);
+                        writelog(id, "Select Your Language", "BOT");
                     }
                     else if (jsonres.status == "Melayu_lang") {
                         
                         Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
+
+                        writelog(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "BOT");
                     }
                     else if (jsonres.status == "Mandarin_lang") {
                         Q1(id, "您在过去三天里是否购买了香烟？", "是", "没有");
+                        writelog(id, "您在过去三天里是否购买了香烟？", "BOT");
                     }
                     else if (jsonres.status == "English_lang") {
                         Q1(id, "Have you purchased any cigarettes in last three days?", "Yes", "No");
+                        writelog(id, "Have you purchased any cigarettes in last three days?", "BOT");
+
                     }
 
 
                     else if (jsonres.status == "Purchased_YES") {
                         if (jsonres.message[0].lang == "Melayu") {                           
-                            Q2(id, "Adakah anda mempunyai invois rokok tersebut?", "Ya", "Tiada");
+                            Q2(id, "Adakah anda mempunyai invois rokok tersebut?", "Ya", "Tiada");                          
+                            writelog(id, "Adakah anda mempunyai invois rokok tersebut?", "BOT");
+
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
-                            Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");
+                            Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");                          
+                            writelog(id, "在过去三天内，您是否有购买香烟的发票？", "BOT");
                         }
                         else {
-                            Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");
+                            Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");                            
+                            writelog(id, "Do you have invoices for cigarettes purchased in last three days?", "BOT");
                         }
                     }
                     else if(jsonres.status=="Location_details")
                     {
                         if (jsonres.message[0].lang == "Melayu") {   
                         
-                            sendTextMessage(id, "Sila kongsikan lokasi anda.");        
+                            sendTextMessage(id, "Sila kongsikan lokasi anda.");
+                            writelog(id, "Sila kongsikan lokasi anda.", "BOT");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
-                            sendTextMessage(id, "请分享您的位置。");        
+                            sendTextMessage(id, "请分享您的位置。");
+                            writelog(id, "请分享您的位置。", "BOT");
                         }
                         else {
-                            sendTextMessage(id, "Please share your location.");                            
+                            sendTextMessage(id, "Please share your location.");
+                            writelog(id, "Please share your location.", "BOT");
                         }
                     }
                     else if (jsonres.status == "Purchased_NO" || jsonres.status == "Completed") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Terima kasih (selesai)");
+                            writelog(id, "Terima kasih (selesai)", "BOT");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "谢谢（完毕）");
+                            writelog(id, "谢谢（完毕）", "BOT");
                         }
                         else {
                             sendTextMessage(id, "Thank you (complete)");
+                            writelog(id, "Thank you (complete)", "BOT");
                         }
 
                     }
                     else if (jsonres.status == "Invoices_YES") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Berapa banyak invois yang anda ada untuk rokok yang telah dibeli dalam 3 hari yang lalu?");
+                            writelog(id, "Berapa banyak invois yang anda ada untuk rokok yang telah dibeli dalam 3 hari yang lalu?", "BOT");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "在过去三天内，您拥有多少张购买香烟的发票？");
+                            writelog(id, "在过去三天内，您拥有多少张购买香烟的发票？", "BOT");
                         }
                         else {
                             sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+                            writelog(id, "How many invoices do you have for cigarettes purchased in last 3 days?", "BOT");
                         }
 
                     }
@@ -718,12 +795,15 @@ function checkstatus(id, text, type, files) {
 
                         if (jsonres.message[0].lang == "Melayu") {                        
                             Q5(id, "Didalam pembelian tersebut, adakah diantaranya tiada invois?", "Ya", "Tiada");
+                            writelog(id, "Didalam pembelian tersebut, adakah diantaranya tiada invois?", "BOT");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             Q5(id, "在过去的三天内，是否有任何一次购买香烟时没有获得发票？", "是", "没有");
+                            writelog(id, "在过去的三天内，是否有任何一次购买香烟时没有获得发票？", "BOT");
                         }
                         else {
                             Q5(id, "Did you purchase any cigarettes in last 3 days for which you do not have invoice?", "Yes", "No");
+                            writelog(id, "Did you purchase any cigarettes in last 3 days for which you do not have invoice?", "BOT");
                         }
 
                     }
@@ -732,21 +812,26 @@ function checkstatus(id, text, type, files) {
 
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila ambil gambar invois dan hantar");
+                            writelog(id, "Sila ambil gambar invois dan hantar", "BOT");
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请拍下发票的照片并发送");
+                            writelog(id, "请拍下发票的照片并发送", "BOT");
                         }
                         else {
                             sendTextMessage(id, "Please take a photo of the invoice and send it.");
+                            writelog(id, "Please take a photo of the invoice and send it.", "BOT");
                         }
 
                     }
                     else if (jsonres.status == "number_exception") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila masukkan nombor yang sah ..");
+                          
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请输入有效的数字..");
+                       
                         }
                         else {
                             sendTextMessage(id, "Please enter a valid number..");
@@ -758,13 +843,16 @@ function checkstatus(id, text, type, files) {
                     }
                     else if (jsonres.status == "Q3_count") {
                         sendTextMessage(id, "How many invoices do you have for cigarettes purchased in last 3 days?");
+                        writelog(id, "How many invoices do you have for cigarettes purchased in last 3 days?", "BOT");
                     }
                     else if (jsonres.status == "NextTask") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila ikut arahan di atas ..");
+                          
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请按照上述说明进行");
+                          
                         }
                         else {
                             sendTextMessage(id, "Please follow above instructions..");
