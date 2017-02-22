@@ -276,7 +276,7 @@ function receivedMessage(event) {
         return;
     }
 
-    if (messageText) {       
+    if (messageText) {
 
         checkstatus(senderID, messageText, "text", "");
 
@@ -369,15 +369,15 @@ function receivedPostback(event) {
     }
     else if (payload == "Melayu") {
         checkstatus(senderID, "Melayu_lang", "text", "");
-        writelog(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "BOT");
+        // writelog(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "BOT");
     }
     else if (payload == "Mandarin") {
         checkstatus(senderID, "Mandarin_lang", "text", "");
-        writelog(id, "您在过去三天里是否购买了香烟？", "BOT");
+        // writelog(id, "您在过去三天里是否购买了香烟？", "BOT");
     }
     else if (payload == "English") {
         checkstatus(senderID, "English_lang", "text", "");
-        writelog(id, "Have you purchased any cigarettes in last three days?", "BOT");
+        // writelog(id, "Have you purchased any cigarettes in last three days?", "BOT");
     }
     else if (payload == "Purchased_YES") {
         checkstatus(senderID, "Purchased_YES", "text", "");
@@ -527,7 +527,7 @@ function sendwebview(id, lang) {
         sendTextMessage(id, "Please provide all the cigarette brands  you bought with their pack size & quantity(units).");
         writelog(id, "Please provide all the cigarette brands  you bought with their pack size & quantity(units).", "BOT")
     }
-    var url = "https://malayisbot.herokuapp.com?id=" + id + "&lang="+lang+"";
+    var url = "https://malayisbot.herokuapp.com?id=" + id + "&lang=" + lang + "";
     var messageData = {
         "recipient": {
             "id": id
@@ -715,41 +715,40 @@ function checkstatus(id, text, type, files) {
                         writelog(id, "Select Your Language", "BOT");
                     }
                     else if (jsonres.status == "Melayu_lang") {
-                        
+
                         Q1(id, "Adakah anda telah membeli mana-mana rokok dalam tiga hari yang lalu?", "Ya", "Tiada");
 
-                       
+
                     }
                     else if (jsonres.status == "Mandarin_lang") {
                         Q1(id, "您在过去三天里是否购买了香烟？", "是", "没有");
-                      
+
                     }
                     else if (jsonres.status == "English_lang") {
                         Q1(id, "Have you purchased any cigarettes in last three days?", "Yes", "No");
-                      
+
 
                     }
 
 
                     else if (jsonres.status == "Purchased_YES") {
-                        if (jsonres.message[0].lang == "Melayu") {                           
-                            Q2(id, "Adakah anda mempunyai invois rokok tersebut?", "Ya", "Tiada");                          
+                        if (jsonres.message[0].lang == "Melayu") {
+                            Q2(id, "Adakah anda mempunyai invois rokok tersebut?", "Ya", "Tiada");
                             writelog(id, "Adakah anda mempunyai invois rokok tersebut?", "BOT");
 
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
-                            Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");                          
+                            Q2(id, "在过去三天内，您是否有购买香烟的发票？", "是", "没有");
                             writelog(id, "在过去三天内，您是否有购买香烟的发票？", "BOT");
                         }
                         else {
-                            Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");                            
+                            Q2(id, "Do you have invoices for cigarettes purchased in last three days?", "Yes", "No");
                             writelog(id, "Do you have invoices for cigarettes purchased in last three days?", "BOT");
                         }
                     }
-                    else if(jsonres.status=="Location_details")
-                    {
-                        if (jsonres.message[0].lang == "Melayu") {   
-                        
+                    else if (jsonres.status == "Location_details") {
+                        if (jsonres.message[0].lang == "Melayu") {
+
                             sendTextMessage(id, "Sila kongsikan lokasi anda.");
                             writelog(id, "Sila kongsikan lokasi anda.", "BOT");
                         }
@@ -797,7 +796,7 @@ function checkstatus(id, text, type, files) {
                     }
                     else if (jsonres.status == "Q5") {
 
-                        if (jsonres.message[0].lang == "Melayu") {                        
+                        if (jsonres.message[0].lang == "Melayu") {
                             Q5(id, "Didalam pembelian tersebut, adakah diantaranya tiada invois?", "Ya", "Tiada");
                             writelog(id, "Didalam pembelian tersebut, adakah diantaranya tiada invois?", "BOT");
                         }
@@ -831,11 +830,11 @@ function checkstatus(id, text, type, files) {
                     else if (jsonres.status == "number_exception") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila masukkan nombor yang sah ..");
-                          
+
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请输入有效的数字..");
-                       
+
                         }
                         else {
                             sendTextMessage(id, "Please enter a valid number..");
@@ -852,11 +851,11 @@ function checkstatus(id, text, type, files) {
                     else if (jsonres.status == "NextTask") {
                         if (jsonres.message[0].lang == "Melayu") {
                             sendTextMessage(id, "Sila ikut arahan di atas ..");
-                          
+
                         }
                         else if (jsonres.message[0].lang == "Mandarin") {
                             sendTextMessage(id, "请按照上述说明进行");
-                          
+
                         }
                         else {
                             sendTextMessage(id, "Please follow above instructions..");
