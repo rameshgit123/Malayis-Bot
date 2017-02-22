@@ -365,6 +365,7 @@ function receivedPostback(event) {
             }
         };
         callSendAPI(messageData);
+        writelog(id, "Select Your Language", "BOT");
     }
     else if (payload == "Melayu") {
         checkstatus(senderID, "Melayu_lang", "text", "");
