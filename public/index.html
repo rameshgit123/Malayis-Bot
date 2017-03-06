@@ -125,21 +125,21 @@
                         url: 'https://malayisbot.herokuapp.com/sendmessage?senderid=' + getParameterByName('id') + '&items=' + dataitems + '',
                         success: function (data) {
                             // use data
-				MessengerExtensions.requestCloseBrowser(function success() {
-  
-      }, function error(err) {
-  
-      }); 
+                            MessengerExtensions.requestCloseBrowser(function success() {
+
+                            }, function error(err) {
+
+                            });
                         },
                         timeout: 1000,
-    error: function(jqXHR, textStatus, errorThrown) {
-	    MessengerExtensions.requestCloseBrowser(function success() {
-  
-      }, function error(err) {
-  
-      });
-	     
-    }
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            MessengerExtensions.requestCloseBrowser(function success() {
+
+                            }, function error(err) {
+
+                            });
+
+                        }
                     });
                 }
             });
@@ -171,7 +171,7 @@
             <thead>
                 <tr>
                     <th style="width: 30%">Product</th>
-                    <th style="width: 30%">Pack Size</th>
+                    <th style="width: 30%;display:none">Pack Size</th>
                     <!-- <th style="width: 10%">Price</th>-->
                     <th style="width: 20%">Quantity</th>
                     <!--  <th style="width: 22%" class="text-center">Subtotal</th>-->
@@ -214,7 +214,7 @@
 
                         </div>
                     </td>
-                    <td data-th="Pack-size">
+                    <td data-th="Pack-size" style="display:none">
                         <div class="dropdown">
 
                             <select>                                
